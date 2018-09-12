@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "state": {
+          "branch": "master",
+          "revision": "06f95bd1bf4f8d5f50bc6bb30b808c253acd4c88",
+          "version": null
+        }
+      },
+      {
+        "package": "Progress",
+        "repositoryURL": "https://github.com/jkandzi/Progress.swift",
+        "state": {
+          "branch": "master",
+          "revision": "62c42a85d807f4017a506da5e3190122e2167adb",
+          "version": null
+        }
+      },
+      {
+        "package": "StrokeModel",
+        "repositoryURL": "https://github.com/eschenfeldt/stroke-swift.git",
+        "state": {
+          "branch": "master",
+          "revision": "5c269fc20e4d70e8caee5b0ed6ebb9b551d020b5",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager.git",
+        "state": {
+          "branch": null,
+          "revision": "6983434787dec4e543e9d398a0a9acf63ccd4da1",
+          "version": "0.2.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
