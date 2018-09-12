@@ -16,14 +16,15 @@ struct RunSettings {
     var outFile: File {
         let root = getRoot(useWorkingDirectory: self.useWorkingDirectory)
         let path = root + "output/"
-        let name = "times=\(timesFile)_hospitals=\(hospitalFile)_\(fixPerformance ? "fixed" : "random")_swift"
+        let timesName = (timesFile.components(separatedBy: "/").last ?? timesFile).removing(suffix: ".csv")
+        let hospitalName = (hospitalFile.components(separatedBy: "/").last ?? hospitalFile).removing(suffix: ".csv")
+        let name = "times=\(timesName)_hospitals=\(hospitalName)_\(fixPerformance ? "fixed" : "random")_swift"
         do {
             return try FileSystem().createFileIfNeeded(at: path + name + ".csv", contents: Data())
         } catch {
             print("Failed to create output file at \(path + name + ".csv")")
             fatalError(error.localizedDescription)
         }
-//        return try! File(path: path + name + ".csv")
     }
 
     var nextPatientNum: Int {
@@ -36,6 +37,14 @@ struct RunSettings {
             if patNum > max { max = patNum }
         }
         return max + 1
+    }
+}
+
+extension String {
+    func removing(suffix: String) -> String {
+        if self.hasSuffix(suffix) {
+            return String(self.prefix(self.count - suffix.count))
+        } else { return self }
     }
 }
 
