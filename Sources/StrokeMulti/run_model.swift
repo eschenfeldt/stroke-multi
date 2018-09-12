@@ -64,13 +64,13 @@ func runModel(_ settings: RunSettings) {
                                               useWorkingDirectory: settings.useWorkingDirectory) else {
         return
     }
-    print("Successfully found \(hospitals.comprehensives.count) comprehensive hospitals" +
+    print("Found \(hospitals.comprehensives.count) comprehensive hospitals" +
           " and \(hospitals.primaries.count) primary hospitals")
 
     guard let times = getTimes(timesFile: settings.timesFile,
                                useWorkingDirectory: settings.useWorkingDirectory) else { return }
 
-    print("Successfully found \(times.count) map points")
+    print("Found \(times.count) map points")
 
     var patients: [Patient] = []
     let idOffset = settings.nextPatientNum
@@ -91,9 +91,9 @@ func runModel(_ settings: RunSettings) {
         print(hospitals.header)
     }
     let t = Date()
-    for point in Progress(times) {
+    for patient in Progress(patients) {
         var rows: [Row] = []
-        for patient in patients {
+        for point in times {
             var row = Row(point: point, patient: patient)
             row.runModel(simulationCount: settings.simulationCount, fixPerformance: settings.fixPerformance)
             rows.append(row)
@@ -106,7 +106,9 @@ func runModel(_ settings: RunSettings) {
         }
     }
     let elapsedTime = Date().timeIntervalSince(t).stringFormatted()
-    print("Completed \(times.count * patients.count) model runs in \(elapsedTime)")
+    let runCount = times.count * patients.count * 2
+    let simCountThousands = (runCount * settings.simulationCount) / 1000
+    print("Completed \(runCount) model runs (\(simCountThousands)K simulations) in \(elapsedTime)")
 }
 
 extension TimeInterval {
