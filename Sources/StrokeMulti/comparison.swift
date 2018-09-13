@@ -12,6 +12,7 @@ struct Row {
     let point: MapPoint
     let patient: Patient
     var results: MultiRunResults? = nil
+    var numPrimaries: Int? = nil
 
     init(point: MapPoint, patient: Patient) {
         self.point = point
@@ -19,9 +20,8 @@ struct Row {
     }
 
     var output: String? {
-        guard let cbc = results?.countsByCenter else { return nil }
+        guard let cbc = results?.countsByCenter, let numPrimaries = numPrimaries else { return nil }
         var out = "\(point.latitude),\(point.longitude),\(patient.id),\(patient.usesHospitalPerformance),"
-        let numPrimaries = patient.hospitals.primaries.compactMap({$0.time}).count
         out += "\(numPrimaries),\(patient.core.sex),\(patient.core.age),\(patient.core.timeSinceSymptoms),"
         out += "\(patient.core.race),"
         let countStrings = patient.hospitals.allCenters.map { center in String(cbc[center] ?? 0) }
@@ -32,6 +32,7 @@ struct Row {
     mutating func runModel(simulationCount: Int, fixPerformance: Bool = false) {
         patient.setTimes(forPoint: point)
         let model = StrokeModel(patient.inputs)
+        numPrimaries = patient.hospitals.primaries.compactMap({$0.time}).count
         results = model.runWithVariance(fixPerformance: fixPerformance, simulationCount: simulationCount)
     }
 }
