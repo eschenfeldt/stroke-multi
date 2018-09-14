@@ -12,6 +12,7 @@ struct RunSettings {
     let simulationCount: Int
     let replaceResults: Bool
     let useWorkingDirectory: Bool
+    let useGCD: Bool
 
     var outFile: File {
         let root = getRoot(useWorkingDirectory: self.useWorkingDirectory)
@@ -95,7 +96,8 @@ func runModel(_ settings: RunSettings) {
         var rows: [Row] = []
         for point in times {
             var row = Row(point: point, patient: patient)
-            row.runModel(simulationCount: settings.simulationCount, fixPerformance: settings.fixPerformance)
+            row.runModel(simulationCount: settings.simulationCount, fixPerformance: settings.fixPerformance,
+                         useGCD: settings.useGCD)
             rows.append(row)
         }
         let manyRows = rows.compactMap({$0.output}).joined()

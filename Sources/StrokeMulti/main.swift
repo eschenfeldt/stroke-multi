@@ -10,6 +10,11 @@ import Utility
 
 let defPC = 10
 let defSim = 1000
+#if os(Linux)
+let defUseGCD = false
+#else
+let defUseGCD = true
+#endif
 
 let arguments = Array(ProcessInfo.processInfo.arguments.dropFirst())
 
@@ -41,6 +46,10 @@ let replaceResultsArg: OptionArgument<Bool> = parser.add(
     option: "--replace_results", kind: Bool.self,
     usage: "Overwrite any existing results (for this set of hospitals and points)"
 )
+let useGCDArg: OptionArgument<Bool> = parser.add(
+    option: "--grand_central", kind: Bool.self,
+    usage: "Use Grand Central Dispatch to parallelize simulations (Default \(defUseGCD))"
+)
 
 func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
     guard let hospitalFile = arguments.get(hospitalFileArg) else {
@@ -55,10 +64,11 @@ func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
     let simulationCount = arguments.get(simulationCountArg) ?? defSim
     let fixPerformance = arguments.get(fixPerformanceArg) ?? false
     let replaceResults = arguments.get(replaceResultsArg) ?? false
+    let useGCD = arguments.get(useGCDArg) ?? defUseGCD
 
     return RunSettings(timesFile: timesFile, hospitalFile: hospitalFile, fixPerformance: fixPerformance,
                        patientCount: patientCount, simulationCount: simulationCount, replaceResults: replaceResults,
-                       useWorkingDirectory: true)
+                       useWorkingDirectory: true, useGCD: useGCD)
 }
 
 //let runSettings = RunSettings(timesFile: "CT_test_2018-09-07_11-19", hospitalFile: "CT_2018-09-06_17-23",

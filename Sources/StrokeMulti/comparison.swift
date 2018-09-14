@@ -29,10 +29,11 @@ struct Row {
         return out + "\n"
     }
 
-    mutating func runModel(simulationCount: Int, fixPerformance: Bool = false) {
+    mutating func runModel(simulationCount: Int, fixPerformance: Bool = false, useGCD: Bool = true) {
         patient.setTimes(forPoint: point)
         let model = StrokeModel(patient.inputs)
         numPrimaries = patient.hospitals.primaries.compactMap({$0.time}).count
-        results = model.runWithVariance(fixPerformance: fixPerformance, simulationCount: simulationCount)
+        results = model.runWithVariance(fixPerformance: fixPerformance, simulationCount: simulationCount,
+                                        useGCD: useGCD)
     }
 }
