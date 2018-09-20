@@ -9,8 +9,7 @@ import Foundation
 import Files
 
 struct MapPoint {
-    let latitude: Double
-    let longitude: Double
+    let id: Int
     let times: [Int: Double?]
 }
 
@@ -20,7 +19,7 @@ func getTimes(timesFile: String, useWorkingDirectory: Bool = false) -> [MapPoint
     let filePath = URL(fileURLWithPath: path + fileName)
     var allRows: [String] = []
     do {
-        allRows = try String(contentsOf: filePath, encoding: .utf8).components(separatedBy: "\n")
+        allRows = try String(contentsOf: filePath, encoding: .utf8).components(separatedBy: .newlines)
     } catch {
         print("Couldn't read file \(timesFile)")
         return nil
@@ -28,7 +27,7 @@ func getTimes(timesFile: String, useWorkingDirectory: Bool = false) -> [MapPoint
 
     var points: [MapPoint] = []
     let header = allRows[0].components(separatedBy: "|")
-    let centerIDStrings = header.suffix(header.count - 2)
+    let centerIDStrings = header.suffix(header.count - 1)
     let centerIDs: [Int] = centerIDStrings.map{ colName in
         if let centerID = Int(colName) {
             return centerID
@@ -40,21 +39,17 @@ func getTimes(timesFile: String, useWorkingDirectory: Bool = false) -> [MapPoint
     }
     for row in allRows {
         let elements = row.components(separatedBy: "|")
-        if elements.count == 1 || elements[0] == "Latitude" { continue }
-        guard let latitude = Double(elements[0]) else {
+        if elements.count == 1 || elements[0] == "ID" { continue }
+        guard let id = Int(elements[0]) else {
             print("Couldn't read latitude on \(row)")
             continue
         }
-        guard let longitude = Double(elements[1]) else {
-            print("Couldn't read longitude on \(row)")
-            continue
-        }
         var times: [Int: Double?] = [:]
-        for (col, time) in elements.suffix(elements.count - 2).enumerated() {
+        for (col, time) in elements.suffix(elements.count - 1).enumerated() {
             let centerID = centerIDs[col]
             times[centerID] = Double(time)
         }
-        points.append(MapPoint(latitude: latitude, longitude: longitude, times: times))
+        points.append(MapPoint(id: id, times: times))
     }
     return points
 }

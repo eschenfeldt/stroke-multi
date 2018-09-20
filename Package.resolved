@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/eschenfeldt/stroke-swift.git",
         "state": {
           "branch": "master",
-          "revision": "5c269fc20e4d70e8caee5b0ed6ebb9b551d020b5",
+          "revision": "181aec44a8d6aa5211b0696a35bbe58b4337bf60",
           "version": null
         }
       },
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/apple/swift-package-manager.git",
         "state": {
           "branch": null,
-          "revision": "6983434787dec4e543e9d398a0a9acf63ccd4da1",
-          "version": "0.2.1"
+          "revision": "235aacc514cb81a6881364b0fedcb3dd083228f3",
+          "version": "0.3.0"
         }
       }
     ]

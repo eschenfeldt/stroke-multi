@@ -21,7 +21,7 @@ struct Row {
 
     var output: String? {
         guard let cbc = results?.countsByCenter, let numPrimaries = numPrimaries else { return nil }
-        var out = "\(point.latitude),\(point.longitude),\(patient.id),\(patient.usesHospitalPerformance),"
+        var out = "\(point.id),\(patient.id),\(patient.usesHospitalPerformance),"
         out += "\(numPrimaries),\(patient.core.sex),\(patient.core.age),\(patient.core.timeSinceSymptoms),"
         out += "\(patient.core.race),"
         let countStrings = patient.hospitals.allCenters.map { center in String(cbc[center] ?? 0) }

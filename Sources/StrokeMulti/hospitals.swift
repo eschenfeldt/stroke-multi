@@ -35,7 +35,7 @@ struct Hospitals {
     }
 
     var headerStart: String {
-        return "Latitude,Longitude,Patient,Varying Hospitals,Primary Count,Sex,Age,Symptoms,RACE"
+        return "Location,Patient,Varying Hospitals,Primary Count,Sex,Age,Symptoms,RACE"
     }
 
     var header: String {
@@ -50,7 +50,7 @@ func getHospitals(hospitalFile: String, useDefaultTimes: Bool = false, useWorkin
     let filePath = URL(fileURLWithPath: root + fileName)
     var allRows: [String] = []
     do {
-        allRows = try String(contentsOf: filePath, encoding: .utf8).components(separatedBy: "\n")
+        allRows = try String(contentsOf: filePath, encoding: .utf8).components(separatedBy: .newlines)
     } catch {
         print("Couldn't read file \(hospitalFile)")
         return nil
@@ -76,9 +76,8 @@ func getHospitals(hospitalFile: String, useDefaultTimes: Bool = false, useWorkin
             print("Failed to scan center type in \(row)")
             continue
         }
-        let name = elements[2]
-        let city = elements[3] + ", " + elements[4]
-        let longName = "\(name) + (\(city))"
+        let longName = "Center (\(centerID))"
+        let name = "\(centerID)"
         let dtnDist: StrokeCenter.TimeDistribution?
         let dtpDist: StrokeCenter.TimeDistribution?
         if useDefaultTimes {
@@ -86,22 +85,22 @@ func getHospitals(hospitalFile: String, useDefaultTimes: Bool = false, useWorkin
             dtpDist = nil
         } else {
             dtnDist = StrokeCenter.TimeDistribution(
-                firstQuartile: Double(elements[11])!,
-                median: Double(elements[12])!,
-                thirdQuartile: Double(elements[13])!
+                firstQuartile: Double(elements[4])!,
+                median: Double(elements[5])!,
+                thirdQuartile: Double(elements[6])!
             )
             if centerType == .comprehensive {
                 dtpDist = StrokeCenter.TimeDistribution(
-                    firstQuartile: Double(elements[14])!,
-                    median: Double(elements[15])!,
-                    thirdQuartile: Double(elements[16])!
+                    firstQuartile: Double(elements[7])!,
+                    median: Double(elements[8])!,
+                    thirdQuartile: Double(elements[9])!
                 )
             } else {
                 dtpDist = nil
             }
         }
-        if let destID = Int(elements[9]) {
-            let transferTime = Double(elements[10])!
+        if let destID = Int(elements[2]) {
+            let transferTime = Double(elements[3])!
             destinations[centerID] = (destID, transferTime)
         }
         let center = StrokeCenter(fromFullName: longName, andShortName: name,

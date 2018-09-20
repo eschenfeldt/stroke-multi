@@ -71,10 +71,6 @@ func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
                        useWorkingDirectory: true, useGCD: useGCD)
 }
 
-//let runSettings = RunSettings(timesFile: "CT_test_2018-09-07_11-19", hospitalFile: "CT_2018-09-06_17-23",
-//                              fixPerformance: false, patientCount: 5, simulationCount: 1000,
-//                              replaceResults: false, useWorkingDirectory: true)
-
 do {
     let parsedArguments = try parser.parse(arguments)
     if let runSettings = processArguments(parsedArguments) {
