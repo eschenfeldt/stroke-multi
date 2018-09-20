@@ -102,9 +102,9 @@ func runModel(_ settings: RunSettings) {
         }
     }
     let elapsedTime = Date().timeIntervalSince(t).stringFormatted()
-    let runCount = times.count * patients.count * 2
-    let simCountThousands = (runCount * settings.simulationCount) / 1000
-    print("Completed \(runCount) model runs (\(simCountThousands)K simulations) in \(elapsedTime)")
+    let runCount = (times.count * patients.count * 2)
+    let simCount = (runCount * settings.simulationCount).countFormatted()
+    print("Completed \(runCount.countFormatted()) model runs (\(simCount) simulations) in \(elapsedTime)")
 }
 
 extension TimeInterval {
@@ -116,5 +116,33 @@ extension TimeInterval {
         let minutes = (interval / 60) % 60
         let hours = (interval / (60 * 60)) % 60
         return String(format: "%02d:%02d:%02d.%.f", hours, minutes, seconds, miliseconds)
+    }
+}
+
+extension Int {
+    func countFormatted() -> String {
+        if self < 10_000 {
+            return "\(self)"
+        }
+        var divisor = 1_000
+        let suffix: String
+        if self <= 1_000_000 {
+            divisor = 1_000
+            suffix = " thousand"
+        } else if self <= 1_000_000_000 {
+            divisor = 1_000_000
+            suffix = " million"
+        } else {
+            divisor = 1_000_000_000
+            suffix = " billion"
+        }
+        let rem = self % divisor
+        let val: String
+        if rem == 0 {
+            val = "\(self / divisor)"
+        } else {
+            val = "\(Double(self) / Double(divisor))"
+        }
+        return "\(val)\(suffix)"
     }
 }
