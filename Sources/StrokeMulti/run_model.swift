@@ -11,11 +11,10 @@ struct RunSettings {
     let patientCount: Int
     let simulationCount: Int
     let replaceResults: Bool
-    let useWorkingDirectory: Bool
     let useGCD: Bool
 
     var outFile: File {
-        let root = getRoot(useWorkingDirectory: self.useWorkingDirectory)
+        let root = getRoot()
         let path = root + "output/"
         let timesName = (timesFile.components(separatedBy: "/").last ?? timesFile).removing(suffix: ".csv")
         let hospitalName = (hospitalFile.components(separatedBy: "/").last ?? hospitalFile).removing(suffix: ".csv")
@@ -49,27 +48,22 @@ extension String {
     }
 }
 
-func getRoot(useWorkingDirectory: Bool) -> String {
-    let path = "\(Folder.home.path)Dropbox (Partners Healthcare)/Stroke/StrokeMulti/"
-    let here = Folder.current.path
-    return useWorkingDirectory ? here + "/" : path
+func getRoot() -> String {
+    return Folder.current.path + "/"
 }
 
 func runModel(_ settings: RunSettings) {
 
-    guard let hospitals = getHospitals(hospitalFile: settings.hospitalFile,
-                                       useWorkingDirectory: settings.useWorkingDirectory) else {
+    guard let hospitals = getHospitals(hospitalFile: settings.hospitalFile) else {
         return
     }
-    guard let defaultHospitals = getHospitals(hospitalFile: settings.hospitalFile, useDefaultTimes: true,
-                                              useWorkingDirectory: settings.useWorkingDirectory) else {
+    guard let defaultHospitals = getHospitals(hospitalFile: settings.hospitalFile, useDefaultTimes: true) else {
         return
     }
     print("Found \(hospitals.comprehensives.count) comprehensive hospitals" +
           " and \(hospitals.primaries.count) primary hospitals")
 
-    guard let times = getTimes(timesFile: settings.timesFile,
-                               useWorkingDirectory: settings.useWorkingDirectory) else { return }
+    guard let times = getTimes(timesFile: settings.timesFile) else { return }
 
     print("Found \(times.count) map points")
 

@@ -44,8 +44,8 @@ struct Hospitals {
     }
 }
 
-func getHospitals(hospitalFile: String, useDefaultTimes: Bool = false, useWorkingDirectory: Bool = false) -> Hospitals? {
-    let root = getRoot(useWorkingDirectory: useWorkingDirectory)
+func getHospitals(hospitalFile: String, useDefaultTimes: Bool = false) -> Hospitals? {
+    let root = getRoot()
     let fileName = hospitalFile.suffix(4) == ".csv" ? hospitalFile : hospitalFile + ".csv"
     let filePath = URL(fileURLWithPath: root + fileName)
     var allRows: [String] = []

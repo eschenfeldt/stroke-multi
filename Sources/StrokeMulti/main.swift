@@ -68,7 +68,7 @@ func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
 
     return RunSettings(timesFile: timesFile, hospitalFile: hospitalFile, fixPerformance: fixPerformance,
                        patientCount: patientCount, simulationCount: simulationCount, replaceResults: replaceResults,
-                       useWorkingDirectory: true, useGCD: useGCD)
+                       useGCD: useGCD)
 }
 
 do {

@@ -13,8 +13,8 @@ struct MapPoint {
     let times: [Int: Double?]
 }
 
-func getTimes(timesFile: String, useWorkingDirectory: Bool = false) -> [MapPoint]? {
-    let path = getRoot(useWorkingDirectory: useWorkingDirectory)
+func getTimes(timesFile: String) -> [MapPoint]? {
+    let path = getRoot()
     let fileName = timesFile.suffix(4) == ".csv" ? timesFile : timesFile + ".csv"
     let filePath = URL(fileURLWithPath: path + fileName)
     var allRows: [String] = []
