@@ -12,4 +12,4 @@ Build the tool by calling `swift build` in the project root. This creates an exe
 StrokeMulti <hospital_file> <times_file> <options> 
 ```
 
-where `<hospital_file>` and `<times_file>` are paths to correctly formated hospital and location files relative to the current working directory. Use `StrokeMulti --help` for more information on options.
+where `<hospital_file>` and `<times_file>` are paths to correctly formatted hospital and location files relative to the current working directory. Use `StrokeMulti --help` for more information on options.
