@@ -9,6 +9,23 @@ import Foundation
 import StrokeModel
 import Files
 
+extension StrokeCenter.CenterType {
+    var asString: String {
+        switch self {
+            case .comprehensive: return "CSC"
+            case .primary: return "PSC"
+        }
+    }
+}
+
+extension StrokeCenter {
+    
+    var nameAndType: String {
+        return "\(shortName) (\(centerType.asString))"
+    }
+    
+}
+
 struct Hospitals {
     let primaries: [StrokeCenter]
     let comprehensives: [StrokeCenter]
@@ -18,8 +35,8 @@ struct Hospitals {
         return primaries + comprehensives
     }
 
-    var allCenterIDs: [Int] {
-        return allCenters.compactMap({$0.centerID})
+    var allCenterLabels: [String] {
+        return allCenters.compactMap({$0.nameAndType})
     }
 
     var headerCols: [Int: Int] {
@@ -35,11 +52,10 @@ struct Hospitals {
     }
 
     var headerStart: String {
-        return "Location,Patient,Varying Hospitals,Primary Count,Sex,Age,Symptoms,RACE"
+        return "Location,Patient,Varying Hospitals,PSC Count,CSC Count,Sex,Age,Symptoms,RACE"
     }
 
     var header: String {
-        let centerIDStrings = allCenterIDs.map(String.init)
         return headerStart + "," + centerIDStrings.joined(separator: ",") + "\n"
     }
 }
