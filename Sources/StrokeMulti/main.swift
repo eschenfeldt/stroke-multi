@@ -10,11 +10,7 @@ import Utility
 
 let defPC = 10
 let defSim = 1000
-#if os(Linux)
-let defUseGCD = false
-#else
-let defUseGCD = true
-#endif
+let defSingleThread = false
 
 let arguments = Array(ProcessInfo.processInfo.arguments.dropFirst())
 
@@ -46,9 +42,9 @@ let replaceResultsArg: OptionArgument<Bool> = parser.add(
     option: "--replace_results", kind: Bool.self,
     usage: "Overwrite any existing results (for this set of hospitals and points)"
 )
-let useGCDArg: OptionArgument<Bool> = parser.add(
-    option: "--grand_central", kind: Bool.self,
-    usage: "Use Grand Central Dispatch to parallelize simulations (Default \(defUseGCD))"
+let singleThreadArg: OptionArgument<Bool> = parser.add(
+    option: "--single_thread", kind: Bool.self,
+    usage: "Disable multithreaded simulations (recommended on WSL for stability)"
 )
 
 func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
@@ -64,11 +60,11 @@ func processArguments(_ arguments: ArgumentParser.Result) -> RunSettings? {
     let simulationCount = arguments.get(simulationCountArg) ?? defSim
     let fixPerformance = arguments.get(fixPerformanceArg) ?? false
     let replaceResults = arguments.get(replaceResultsArg) ?? false
-    let useGCD = arguments.get(useGCDArg) ?? defUseGCD
+    let singleThread = arguments.get(singleThreadArg) ?? defSingleThread
 
     return RunSettings(timesFile: timesFile, hospitalFile: hospitalFile, fixPerformance: fixPerformance,
                        patientCount: patientCount, simulationCount: simulationCount, replaceResults: replaceResults,
-                       useGCD: useGCD)
+                       useGCD: !singleThread)
 }
 
 do {
