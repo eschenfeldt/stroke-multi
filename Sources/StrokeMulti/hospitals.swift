@@ -56,7 +56,7 @@ struct Hospitals {
     }
 
     var header: String {
-        return headerStart + "," + centerIDStrings.joined(separator: ",") + "\n"
+        return headerStart + "," + allCenterLabels.joined(separator: ",") + "\n"
     }
 }
 
